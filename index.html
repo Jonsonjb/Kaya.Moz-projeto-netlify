@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaya.Moz | Imóveis em Moçambique</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 overflow-hidden">
+
+    <header class="h-16 bg-white shadow-sm border-b flex items-center justify-between px-6 z-[1001] relative">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">K</div>
+            <h1 class="text-2xl font-black text-[#1E3A8A]">Kaya.<span class="text-orange-500">Moz</span></h1>
+        </div>
+        <button onclick="toggleModal()" class="bg-orange-500 text-white px-5 py-2 rounded-full font-bold shadow-md hover:bg-orange-600 transition">+ Publicar</button>
+    </header>
+
+    <main class="flex flex-col md:flex-row h-[calc(100vh-64px)]">
+        <aside class="w-full md:w-[400px] bg-white border-r h-full flex flex-col z-10 shadow-xl">
+            <div class="px-4 pt-4 bg-white">
+                <input type="text" id="searchInput" onkeyup="executarBusca()" placeholder="Pesquise bairro ou título..." 
+                class="w-full pl-4 pr-4 py-3 bg-slate-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+            </div>
+
+            <div class="p-4 border-b flex gap-2 overflow-x-auto" id="filtros">
+                <button onclick="filtrarImoveis('TODOS')" class="filter-btn active bg-orange-500 text-white px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">🌍 Todos</button>
+                <button onclick="filtrarImoveis('ALUGUER')" class="filter-btn bg-slate-100 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">🏠 Casas</button>
+                <button onclick="filtrarImoveis('CONTENTOR')" class="filter-btn bg-slate-100 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">📦 Contentores</button>
+            </div>
+
+            <div id="lista-imoveis" class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                </div>
+        </aside>
+
+        <section class="flex-1 relative">
+            <div id="map" class="h-full w-full"></div>
+        </section>
+    </main>
+
+    <!-- Modal de Publicação (com formulário) -->
+    <div id="publishModal" class="fixed inset-0 bg-black/40 flex items-center justify-center hidden z-[1002]">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-bold">Publicar Imóvel</h2>
+                <button onclick="toggleModal()" class="text-slate-500">✖</button>
+            </div>
+
+            <form id="publishForm" class="mt-2 space-y-3">
+                <input name="titulo" required placeholder="Título" class="w-full pl-3 pr-3 py-2 border rounded" />
+                <input name="preco" required placeholder="Preço (ex: 75.000 MT)" class="w-full pl-3 pr-3 py-2 border rounded" />
+                <input name="localizacao" required placeholder="Localização (bairro, cidade)" class="w-full pl-3 pr-3 py-2 border rounded" />
+                <input name="imagem" placeholder="URL da imagem (opcional)" class="w-full pl-3 pr-3 py-2 border rounded" />
+                <div class="flex gap-2">
+                    <input name="lat" type="number" step="any" placeholder="Lat (opcional)" class="w-1/2 pl-3 pr-3 py-2 border rounded" />
+                    <input name="lng" type="number" step="any" placeholder="Lng (opcional)" class="w-1/2 pl-3 pr-3 py-2 border rounded" />
+                </div>
+                <select name="tipo" class="w-full pl-3 pr-3 py-2 border rounded">
+                    <option value="ALUGUER">Aluguer (Casa)</option>
+                    <option value="CONTENTOR">Contentor</option>
+                </select>
+
+                <div class="mt-4 flex justify-end gap-3">
+                    <button type="button" onclick="toggleModal()" class="px-4 py-2 rounded border">Cancelar</button>
+                    <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded">Publicar</button>
+                </div>
+            </form>
+
+            <p id="publishMsg" class="text-sm text-green-600 hidden mt-3">Imóvel publicado com sucesso.</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
